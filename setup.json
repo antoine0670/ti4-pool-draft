@@ -1,0 +1,45 @@
+{
+	"Players": [
+  		"Antoine",
+  		"Pier-Karl",
+  		"Sam",
+  		"Yann",
+  		"Fred",
+  		"Etienne",
+  		"To",
+  		"Anthony"
+  	],
+  	"PoK": true,
+  	"AutoPool": true,
+  	"PoolSize": 2,
+  	"ExcludeList": ["Council Keleres"],
+  	"OtherFactionsList": ["Council Keleres"],
+  	"FactionsList": [
+  		"Arborec",
+  		"Barony of Letnev",
+  		"Clan of Saar",
+  		"Embers of Muaat",
+  		"Emirates of Hacan",
+  		"Federation of Sol",
+  		"Ghosts of Creuss",
+  		"L1Z1X Mindnet",
+  		"Mentak Coalition",
+  		"Naalu Collective",
+  		"Nekro Virus",
+  		"Sardakk N'Orr",
+  		"Universities of Jol-Nar",
+  		"Winnu",
+  		"Xxcha Kingdom",
+  		"Yin Brotherhood",
+  		"Yssaril Tribes"
+  	],
+  	"PoKFactionsList": [
+  		"Argent Flight",
+  		"Empyrean",
+  		"Mahact Gene-Sorcerers",
+  		"Naaz-Rokha Alliance",
+  		"Nomad",
+  		"Titans of Ul",
+  		"Vuil'Raith Cabal"
+  	]
+}
