@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
-#include <experimental/filesystem>	// -lstdc++fs
+#include <experimental/filesystem>
 #include "../libs/nlohmann/json.hpp"
 
 using json = nlohmann::json;
@@ -85,7 +85,8 @@ load_factions()
 	return factions;
 }
 
-void print_setup(const int& faction_count, const int& pool_size)
+void 
+print_setup(const int& faction_count, const int& pool_size)
 {
 	std::cout << "Number of players: " << config["Players"].size() << std::endl;
 	std::cout << "Using PoK expansion: " << config["PoK"] << std::endl;
