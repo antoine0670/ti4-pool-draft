@@ -1,31 +1,46 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 
-project(TI4_RandomDraft
-		VERSION 0.0
-		DESCRIPTION "A TI4 random pool draft generation tool"
-		LANGUAGES CXX)
+project(ti4-pool-draft LANGUAGES CXX)
 
-if(CMAKE_PROJECT_NAME STREQUAL TI4_RandomDraft)
-	set(CMAKE_CXX_STANDARD 11)
-	set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-	set(CMAKE_CXX_EXTENSIONS OFF)
+include(GNUInstallDirs)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
-	set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/cmake")
 
-	# include(Ctest)
+option(RUN_TESTS "Enable tests" OFF)
+option(LINT_CODE "Code linting" OFF)
+option(GEN_DOC "Generate documentation" OFF)
 
+include(FindCPPUNIT)
+
+if (LINT_CODE)
+	set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=,readability-*,modernize-*,performance-*,cppcoreguidelines-* -use-color -header-filter=.h)
+endif()
+
+if (GEN_DOC)
 	find_package(Doxygen)
-  	if(Doxygen_FOUND)
-    	add_subdirectory(docs)
-  	else()
-    	message(STATUS "Doxygen not found, not building docs")
-  	endif()
+	if(Doxygen_FOUND)
+		add_subdirectory(docs)
+	else()
+		message(STATUS "Doxygen not found, not building docs")
+	endif()
 endif()
 
-include(FetchContent)
-if(${CMAKE_VERSION} VERSION_LESS 3.14)
-  include(cmake/add_FetchContent_MakeAvailable.cmake)
-endif()
-
+# defines targets and sources
 add_subdirectory(src)
+
+# enable testing and define tests
+if (RUN_TESTS)
+	if (CPPUNIT_FOUND)
+		enable_testing()
+		add_subdirectory(tests)
+	else()
+		message(STATUS "CppUnit not found, not building tests")
+	endif()
+endif()
