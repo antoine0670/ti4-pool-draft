@@ -2,10 +2,19 @@
 #include <fstream>
 #include <map>
 #include <experimental/filesystem>
+#include <getopt.h>
+
 #include "../libs/nlohmann/json.hpp"
+
+#include "PoolDraftConfig.h"
 
 using json = nlohmann::json;
 namespace fs = std::experimental::filesystem;
+
+static const std::string
+	default_config_file{ std::string(PROJECT_DIRECTORY) + "/example/setup.json"};
+
+static std::string config_file{ default_config_file };
 
 json config;
 
@@ -95,12 +104,57 @@ print_setup(const int& faction_count, const int& pool_size)
 	std::cout << std::endl;
 }
 
-int 
-main(void)
+// CLI functions
+[[ noreturn ]] void print_usage()
+{
+	std::cout << 
+		"TI4_PoolDraft " << PoolDraft_VERSION << "\n"
+		"\n"
+		"Usage: TI4_PoolDraft [OPTIONS]\n\n"
+		"Options:\n"
+		"-c, --config            Configuration file\n"
+		"-h, --help              Show help\n";
+
+    exit(1);
+}
+
+void process_args(int argc, char** argv)
+{
+	const char* const short_opts = "p:s:bnvh";
+	const option long_opts[] = {
+		{"config", no_argument, nullptr, 'c'},
+		{"verbose", no_argument, nullptr, 'v'},
+		{"help", no_argument, nullptr, 'h'},
+		{nullptr, no_argument, nullptr, 0}
+	};
+
+	while (true) {
+		const auto opt = getopt_long(argc, argv, short_opts, long_opts, nullptr);
+
+		if (-1 == opt) {
+	  		break;
+		}
+
+		switch (opt) {
+		  case 'c':
+		  	std::cout << optarg << std::endl;
+		  case 'h': // -h or --help
+		  case '?': // Unrecognized option
+		  default:
+		    print_usage();
+		    break;
+		}
+	}
+}
+
+int main(int argc, char* argv[])
 {
 	srand(time(NULL));
 
-	load_config("example/setup.json");
+	// Process command line arguments
+  	process_args(argc, argv);
+
+	load_config(config_file);
 
 	int faction_count = config["FactionsList"].size() + 
 						config["OtherFactionsList"].size() - 

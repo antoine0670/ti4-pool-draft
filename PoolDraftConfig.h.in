@@ -1,0 +1,5 @@
+#define PoolDraft_VERSION @PoolDraft_VERSION@
+#define PoolDraft_VERSION_MAJOR @PoolDraft_VERSION_MAJOR@
+#define PoolDraft_VERSION_MINOR @PoolDraft_VERSION_MINOR@
+
+#define PROJECT_DIRECTORY	"@CMAKE_SOURCE_DIR@"
